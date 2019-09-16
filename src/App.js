@@ -1,24 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
-import HeaderSection from './components/HeaderSection';
-import ResultsSection from './components/ResultsSection';
-import DetailsSection from './components/DetailsSection';
+import { ThemeProvider } from 'styled-components';
 
-const Container = styled.div`
-  div {
-    display: flex;
-  }
-`;
+import Page from './components/Page';
+import theme from './theme';
 
 function App() {
   return (
-    <Container>
-      <HeaderSection />
-      <div>
-        <ResultsSection />
-        <DetailsSection />
-      </div>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <Page />
+    </ThemeProvider>
   );
 }
 
