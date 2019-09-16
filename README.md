@@ -1,3 +1,7 @@
+# Zomato Viewer
+
+Find, navigate and view restaurants through the Zomato API
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
