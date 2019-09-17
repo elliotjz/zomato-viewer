@@ -7,7 +7,6 @@ import DetailsSection from './DetailsSection';
 
 const Container = styled.div`
   color: ${(props) => props.theme.colors.black};
-  font-family: sans-serif;
 
   div.main {
     display: flex;
