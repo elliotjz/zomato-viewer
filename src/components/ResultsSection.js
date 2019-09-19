@@ -7,7 +7,7 @@ const Container = styled.div`
   padding: 1rem 1rem 1rem 0;
 `;
 
-const ResultsSection = () => (
+const ResultsSection = ({ restaurants }) => (
   <Container>
     <p>ResultsSection</p>
   </Container>

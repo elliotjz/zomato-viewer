@@ -49,26 +49,26 @@ const Container = styled.div`
   }
 `;
 
-const categories = [
-  { value: 'Dining', text: 'Dining' },
-  { value: 'Take-Away', text: 'Take-Away' },
-  { value: 'Delivery', text: 'Delivery' },
-  { value: 'Pubs-And-Bars', text: 'Pubs & Bars' },
-];
+const categories = {
+  Dining: { text: 'Dining', id: 2 },
+  'Take-Away': { text: 'Take-Away', id: 5 },
+  Delivery: { text: 'Delivery', id: 1 },
+  'Pubs-And-Bars': { text: 'Pubs & Bars', id: 11 },
+};
 
-const cuisines = [
-  { value: 'Cafe-Food', text: 'Cafe Food' },
-  { value: 'Coffee-and-Tea', text: 'Coffee and Tea' },
-  { value: 'Pizza', text: 'Pizza' },
-  { value: 'Fast-Food', text: 'Fast Food' },
-  { value: 'Asian', text: 'Asian' },
-  { value: 'Bakery', text: 'Bakery' },
-  { value: 'Italian', text: 'Italian' },
-  { value: 'Sandwich', text: 'Sandwich' },
-  { value: 'Chinese', text: 'Chinese' },
-  { value: 'Pub-Food', text: 'Pub Food' },
-  { value: 'Other', text: 'Other' },
-];
+const cuisines = {
+  'Cafe-Food': { text: 'Cafe Food', id: 1039 },
+  'Coffee-and-Tea': { text: 'Coffee and Tea', id: 161 },
+  Pizza: { text: 'Pizza', id: 82 },
+  'Fast-Food': { text: 'Fast Food', id: 40 },
+  Asian: { text: 'Asian', id: 3 },
+  Bakery: { text: 'Bakery', id: 5 },
+  Italian: { text: 'Italian', id: 55 },
+  Sandwich: { text: 'Sandwich', id: 304 },
+  Chinese: { text: 'Chinese', id: 25 },
+  'Pub-Food': { text: 'Pub Food', id: 983 },
+  Other: { text: 'Other', id: 110 },
+};
 
 class HeaderSection extends Component {
   constructor(props) {
@@ -82,10 +82,53 @@ class HeaderSection extends Component {
 
   componentDidMount() {
     const checkboxes = {};
-    [...categories, ...cuisines].forEach((item) => {
-      checkboxes[item.value] = false;
+    const categoryKeys = Object.keys(categories);
+    const cuisineKeys = Object.keys(cuisines);
+    [...categoryKeys, ...cuisineKeys].forEach((item) => {
+      checkboxes[item] = false;
     });
     this.setState({ checkboxes });
+  }
+
+  async componentDidUpdate() {
+    const { checkboxes } = this.state;
+    let query = '?entity_id=297&entity_type=city';
+
+    // Append category queries
+    let categoryQuery = '&category=';
+    Object.keys(categories).forEach((item) => {
+      if (checkboxes[item]) {
+        categoryQuery += `${categories[item].id},`;
+      }
+    });
+    if (categoryQuery !== '&category=') {
+      query += categoryQuery.slice(0, -1);
+    }
+
+    // Append cuisine queries
+    let cuisineQuery = '&cuisine=';
+    Object.keys(cuisines).forEach((item) => {
+      if (checkboxes[item]) {
+        cuisineQuery += `${cuisines[item].id},`;
+      }
+    });
+    if (cuisineQuery !== '&cuisine=') {
+      query += cuisineQuery.slice(0, -1);
+    }
+
+    const url = `https://developers.zomato.com/api/v2.1/search${query}`;
+    const res = await fetch(url, {
+      headers: {
+        Accept: 'application/json',
+        'user-key': `${process.env.REACT_APP_ZOMATO_API_KEY}a`,
+      },
+    });
+    if (res.status === 200) {
+      const resJson = await res.json();
+      console.log(resJson);
+    } else {
+      console.log(`Error. State: ${res.status}`);
+    }
   }
 
   onCheckboxChange = (e) => {
@@ -124,13 +167,13 @@ class HeaderSection extends Component {
             <fieldset id="categories">
               <label className="section-label" htmlFor="categories">CATEGORY</label>
               <div className="checkboxes">
-                {categories.map((category) => (
+                {Object.keys(categories).map((category) => (
                   <Checkbox
-                    key={category.value}
-                    name={category.value}
-                    text={category.text}
+                    key={category}
+                    name={category}
+                    text={categories[category].text}
                     categoryName="category"
-                    checked={!!checkboxes[category.value]}
+                    checked={!!checkboxes[category]}
                     onChange={this.onCheckboxChange}
                   />
                 ))}
@@ -139,13 +182,13 @@ class HeaderSection extends Component {
             <fieldset id="cuisines">
               <label className="section-label" htmlFor="cuisines">CUISINE</label>
               <div className="checkboxes">
-                {cuisines.map((cuisine) => (
+                {Object.keys(cuisines).map((cuisine) => (
                   <Checkbox
-                    key={cuisine.value}
-                    name={cuisine.value}
-                    text={cuisine.text}
+                    key={cuisine}
+                    name={cuisine}
+                    text={cuisines[cuisine].text}
                     categoryName="cuisine"
-                    checked={!!checkboxes[cuisine.value]}
+                    checked={!!checkboxes[cuisine]}
                     onChange={this.onCheckboxChange}
                   />
                 ))}
