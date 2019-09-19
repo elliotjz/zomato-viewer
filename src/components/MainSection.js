@@ -17,6 +17,12 @@ class MainSection extends Component {
     };
   }
 
+  onResultClick = (index) => {
+    this.setState({
+      restaurantIndex: index,
+    });
+  }
+
   render() {
     const { restaurantIndex } = this.state;
     const { restaurants } = this.props;
@@ -28,6 +34,7 @@ class MainSection extends Component {
         <ResultsSection
           restaurants={restaurants}
           loading={loading}
+          onResultClick={this.onResultClick}
         />
         <DetailsSection
           restaurant={rProp}

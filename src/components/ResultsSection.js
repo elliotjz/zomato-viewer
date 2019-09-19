@@ -6,18 +6,32 @@ const Container = styled.div`
   flex: 3;
   background-color: ${(props) => props.theme.colors.grey};
   padding: 1rem 1rem 1rem 0;
+
+  button {
+    display: block;
+  }
 `;
 
-const ResultsSection = ({ restaurants, loading }) => (
+const ResultsSection = ({ restaurants, loading, onResultClick }) => (
   <Container>
     <h3>ResultsSection</h3>
+
     {loading ? <p>Loading...</p>
       : (
-        <>
-          {restaurants.map((r) => (
-            <p key={r.restaurant.R.res_id}>{r.restaurant.name}</p>
-          ))}
-        </>
+        <menu>
+          <ul>
+            {restaurants.map((r, index) => (
+              <li key={r.restaurant.R.res_id}>
+                <button
+                  type="button"
+                  onClick={() => onResultClick(index)}
+                >
+                  {r.restaurant.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </menu>
       )}
   </Container>
 );
@@ -25,6 +39,7 @@ const ResultsSection = ({ restaurants, loading }) => (
 ResultsSection.propTypes = {
   restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
+  onResultClick: PropTypes.func.isRequired,
 };
 
 export default ResultsSection;
