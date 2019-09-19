@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  width: 150px;
+  width: 12em;
   font-size: 0.9em;
 
   input {
     appearance: none;
     -webkit-appearance: none;
     background-color: ${(props) => props.theme.colors.grey};
-    padding: 0.7em;
+    padding: 0.6em;
     top: 0.5em;
     display: inline-block;
     position: relative;

@@ -6,34 +6,45 @@ import Slider from './Slider';
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.colors.white};
-  padding: 3rem;
+  flex: 1;
 
   form {
     display: flex;
     justify-content: space-between;
+    padding: 3em;
+    font-size: 0.8em;
+    max-width: 1200px;
+    margin: auto;
 
     .checkboxes-container {
       display: flex;
 
       fieldset {
         margin: 1em;
-
-        .fieldset-label {
-          font-weight: 600;
-          font-size: 0.8em;
-          letter-spacing: 0.2em;
-        }
       }
     }
 
     .sliders-container {
-      // float: right;
+      width: 100%;
+      min-width: 150px;
+      max-width: 250px;
+      margin-right: 3em;
+
+      fieldset {
+        margin: 1em 0;
+      }
     }
 
     .checkboxes {
       display: grid;
       grid-template-rows: 1fr 1fr 1fr 1fr;
       grid-auto-flow: column;
+    }
+
+    .section-label {
+      font-weight: 600;
+      font-size: 0.8em;
+      letter-spacing: 0.2em;
     }
   }
 `;
@@ -64,9 +75,17 @@ class HeaderSection extends Component {
     super(props);
     this.state = {
       checkboxes: {},
-      rating: '2',
-      cost: '1',
+      ratings: [1, 2],
+      costs: [1, 2],
     };
+  }
+
+  componentDidMount() {
+    const checkboxes = {};
+    [...categories, ...cuisines].forEach((item) => {
+      checkboxes[item.value] = false;
+    });
+    this.setState({ checkboxes });
   }
 
   onCheckboxChange = (e) => {
@@ -82,27 +101,28 @@ class HeaderSection extends Component {
     });
   }
 
-  onRatingChange = (e) => {
+  onRatingsChange = (values) => {
+    const intValues = values.map((v) => parseInt(v, 10));
     this.setState({
-      rating: e.target.value,
+      ratings: intValues,
     });
   }
 
-  onCostChange = (e) => {
+  onCostsChange = (values) => {
+    const intValues = values.map((v) => parseInt(v, 10));
     this.setState({
-      cost: e.target.value,
+      costs: intValues,
     });
   }
 
   render() {
-    const { checkboxes, rating, cost } = this.state;
-
+    const { checkboxes, ratings, costs } = this.state;
     return (
       <Container>
         <form>
           <div className="checkboxes-container">
             <fieldset id="categories">
-              <label className="fieldset-label" htmlFor="categories">CATEGORY</label>
+              <label className="section-label" htmlFor="categories">CATEGORY</label>
               <div className="checkboxes">
                 {categories.map((category) => (
                   <Checkbox
@@ -117,7 +137,7 @@ class HeaderSection extends Component {
               </div>
             </fieldset>
             <fieldset id="cuisines">
-              <label className="fieldset-label" htmlFor="cuisines">CUISINE</label>
+              <label className="section-label" htmlFor="cuisines">CUISINE</label>
               <div className="checkboxes">
                 {cuisines.map((cuisine) => (
                   <Checkbox
@@ -134,28 +154,30 @@ class HeaderSection extends Component {
           </div>
           <div className="sliders-container">
             <fieldset>
-              <label htmlFor="rating">
-                Rating
+              <label className="section-label" htmlFor="rating">
+                RATING
                 <br />
                 <Slider
-                  label="rating"
-                  value={rating}
-                  min="0"
-                  max="5"
-                  onChange={this.onRatingChange}
+                  values={ratings}
+                  min={0}
+                  max={5}
+                  minText="0"
+                  maxText="5"
+                  onChange={this.onRatingsChange}
                 />
               </label>
             </fieldset>
             <fieldset>
-              <label htmlFor="cost">
-                Cost
+              <label className="section-label" htmlFor="cost">
+                COST
                 <br />
                 <Slider
-                  label="cost"
-                  value={cost}
-                  min="1"
-                  max="4"
-                  onChange={this.onCostChange}
+                  values={costs}
+                  min={0}
+                  max={3}
+                  minText="$"
+                  maxText="$$$$"
+                  onChange={this.onCostsChange}
                 />
               </label>
             </fieldset>
