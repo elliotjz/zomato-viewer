@@ -8,17 +8,23 @@ const Container = styled.div`
   padding: 1rem 1rem 1rem 0;
 `;
 
-const ResultsSection = ({ restaurants }) => (
+const ResultsSection = ({ restaurants, loading }) => (
   <Container>
     <h3>ResultsSection</h3>
-    {restaurants.map((r) => (
-      <p key={r.restaurant.R.res_id}>{r.restaurant.name}</p>
-    ))}
+    {loading ? <p>Loading...</p>
+      : (
+        <>
+          {restaurants.map((r) => (
+            <p key={r.restaurant.R.res_id}>{r.restaurant.name}</p>
+          ))}
+        </>
+      )}
   </Container>
 );
 
 ResultsSection.propTypes = {
   restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default ResultsSection;

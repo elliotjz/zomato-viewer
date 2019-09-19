@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -7,10 +8,15 @@ const Container = styled.div`
   padding: 3rem;
 `;
 
-const DetailsSection = () => (
+const DetailsSection = ({ restaurant, loading }) => (
   <Container>
-    <p>DetailsSection</p>
+    {loading ? <p>loading...</p> : <p>{restaurant.restaurant.name}</p>}
   </Container>
 );
+
+DetailsSection.propTypes = {
+  restaurant: PropTypes.objectOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 export default DetailsSection;
