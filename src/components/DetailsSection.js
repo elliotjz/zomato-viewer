@@ -4,6 +4,9 @@ import styled from 'styled-components';
 
 import Tick from './Tick';
 import Cross from './Cross';
+import OpenIndicator from './OpenIndicator';
+
+import { getOpeningHours, isOpenNow } from '../utils';
 
 const Container = styled.div`
   flex: 7;
@@ -66,6 +69,12 @@ const DetailsSection = ({ restaurant, loading }) => {
 
   const streetNumber = rest.location.address.split(' ')[0];
   const address = streetNumber + rest.location.locality_verbose;
+
+  const { timings } = rest;
+  const date = new Date();
+  const openingHours = getOpeningHours(timings, date);
+  const openNow = isOpenNow(openingHours, date);
+
   return (
     <Container>
       <div className="image-container">
@@ -103,7 +112,11 @@ const DetailsSection = ({ restaurant, loading }) => {
         <label>PHONE NUMBER</label>
         <p className="large-p">{rest.phone_numbers}</p>
         <label>OPENING HOURS</label>
-        <p className="large-p">{rest.timings}</p>
+        <p className="large-p">
+          Today {openingHours}
+          <OpenIndicator open={openNow} />
+        </p>
+
       </div>
     </Container>
   );
