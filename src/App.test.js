@@ -44,6 +44,7 @@ it('calculates whether a restaurant is open', () => {
   const openingHours4 = '8 PM to 12 Midnight';
   const openingHours5 = '12 Noon to 9 PM';
   const openingHours6 = '8 AM to 1 PM, 6 PM to 9 PM';
+  const openingHours7 = '24 Hours';
 
   const nine = new Date('September 15, 2019 09:00:00');
   const five59 = new Date('September 15, 2019 05:59:00');
@@ -92,4 +93,7 @@ it('calculates whether a restaurant is open', () => {
 
   // Deals with white space
   expect(isOpenNow(` ${openingHours6}`, nine)).toEqual(true);
+
+  // Deals with 24 hour opening times
+  expect(isOpenNow(`${openingHours7}`, nine)).toEqual(true);
 });

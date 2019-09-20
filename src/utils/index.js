@@ -23,6 +23,7 @@ const isOpenNow = (openingHours, date) => {
     : parseInt(time.split(' '), 10) + 12);
 
   if (openingHours === 'Closed') return false;
+  if (openingHours === '24 Hours') return true;
   const currentHour = date.getHours();
 
   const matches = openingHours.split(', ').filter((hours) => {
