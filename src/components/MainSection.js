@@ -35,6 +35,7 @@ class MainSection extends Component {
           restaurants={restaurants}
           loading={loading}
           onResultClick={this.onResultClick}
+          selectedIndex={restaurantIndex}
         />
         <DetailsSection
           restaurant={rProp}
