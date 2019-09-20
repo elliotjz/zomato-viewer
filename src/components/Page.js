@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import HeaderSection from './HeaderSection';
-import ResultsSection from './ResultsSection';
-import DetailsSection from './DetailsSection';
+import MainSection from './MainSection';
 
 const categories = {
   Dining: { text: 'Dining', id: 2 },
@@ -28,10 +27,6 @@ const cuisines = {
 
 const Container = styled.div`
   color: ${(props) => props.theme.colors.black};
-
-  div.main {
-    display: flex;
-  }
 `;
 
 class Page extends Component {
@@ -140,12 +135,7 @@ class Page extends Component {
           onCostsChange={this.onCostsChange}
           onCheckboxChange={this.onCheckboxChange}
         />
-        <div className="main">
-          <ResultsSection
-            restaurants={restaurants}
-          />
-          <DetailsSection />
-        </div>
+        <MainSection restaurants={restaurants} />
       </Container>
     );
   }
