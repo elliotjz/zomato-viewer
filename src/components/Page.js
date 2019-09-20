@@ -67,13 +67,13 @@ class Page extends Component {
     }
 
     // Append cuisine queries
-    let cuisineQuery = '&cuisine=';
+    let cuisineQuery = '&cuisines=';
     Object.keys(cuisines).forEach((item) => {
       if (checkboxes[item]) {
         cuisineQuery += `${cuisines[item].id},`;
       }
     });
-    if (cuisineQuery !== '&cuisine=') {
+    if (cuisineQuery !== '&cuisines=') {
       query += cuisineQuery.slice(0, -1);
     }
 
