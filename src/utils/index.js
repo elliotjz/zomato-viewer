@@ -17,18 +17,19 @@ const getOpeningHours = (timings, date) => {
   return openingTimes;
 };
 
-const isOpenNow = (openingHours, date) => {
-  const to24Hour = (time) => (time.includes('AM') || time.includes('Noon')
+const isOpenNow = (openingHoursParam, date) => {
+  const to24Hour = (time) => (time.includes('AM') || time.includes('NOON')
     ? parseInt(time.split(' ')[0], 10)
     : parseInt(time.split(' '), 10) + 12);
 
-  if (openingHours === 'Closed') return false;
-  if (openingHours === '24 Hours') return true;
+  const openingHours = openingHoursParam.toUpperCase();
+  if (openingHours === 'CLOSED') return false;
+  if (openingHours === '24 HOURS') return true;
   const currentHour = date.getHours();
 
   const matches = openingHours.split(', ').filter((hours) => {
     // Compare hours
-    const timesArr = hours.split(' to ');
+    const timesArr = hours.split(/TO|-|–/); // Split by " TO " or " - "
     const openingHour = to24Hour(timesArr[0].trim());
     const closingHour = to24Hour(timesArr[1].trim());
 
