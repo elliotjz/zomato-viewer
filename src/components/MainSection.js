@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -9,45 +9,38 @@ const Container = styled.div`
   display: flex;
 `;
 
-class MainSection extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      restaurantIndex: 0,
-    };
-  }
+const MainSection = ({
+  restaurants,
+  selectedRestaurant,
+  onRestaurantSelect,
+  err,
+  loading,
+}) => {
+  const rProp = restaurants.length > 0 ? restaurants[selectedRestaurant] : {};
 
-  onResultClick = (index) => {
-    this.setState({
-      restaurantIndex: index,
-    });
-  }
-
-  render() {
-    const { restaurantIndex } = this.state;
-    const { restaurants } = this.props;
-    const rProp = restaurants.length > 0 ? restaurants[restaurantIndex] : {};
-    const loading = restaurants.length === 0;
-
-    return (
-      <Container>
-        <ResultsSection
-          restaurants={restaurants}
-          loading={loading}
-          onResultClick={this.onResultClick}
-          selectedIndex={restaurantIndex}
-        />
-        <DetailsSection
-          restaurant={rProp}
-          loading={loading}
-        />
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <ResultsSection
+        restaurants={restaurants}
+        onRestaurantSelect={onRestaurantSelect}
+        selectedRestaurant={selectedRestaurant}
+        err={err}
+        loading={loading}
+      />
+      <DetailsSection
+        restaurant={rProp}
+        loading={loading}
+      />
+    </Container>
+  );
+};
 
 MainSection.propTypes = {
   restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectedRestaurant: PropTypes.number.isRequired,
+  onRestaurantSelect: PropTypes.func.isRequired,
+  err: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default MainSection;

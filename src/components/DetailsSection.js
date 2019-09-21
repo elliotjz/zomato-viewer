@@ -64,60 +64,74 @@ const Container = styled.div`
 const DetailsSection = ({ restaurant, loading }) => {
   if (loading) return <Container><p>loading...</p></Container>;
 
-  const rest = restaurant.restaurant;
-  const photoUrl = rest.photos[0].photo.url;
+  let rest;
+  let photoUrl;
+  let address;
+  let openingHours;
+  let openNow;
+  if (restaurant && restaurant.restaurant) {
+    rest = restaurant.restaurant;
+    photoUrl = rest.photos[0].photo.url;
 
-  const streetNumber = rest.location.address.split(' ')[0];
-  const address = streetNumber + rest.location.locality_verbose;
+    const streetNumber = rest.location.address.split(' ')[0];
+    address = streetNumber + rest.location.locality_verbose;
 
-  const { timings } = rest;
-  const date = new Date();
-  const openingHours = getOpeningHours(timings, date);
-  const openNow = isOpenNow(openingHours, date);
+    const { timings } = rest;
+    const date = new Date();
+    openingHours = getOpeningHours(timings, date);
+    openNow = isOpenNow(openingHours, date);
+  } else {
+    rest = null;
+  }
 
   return (
     <Container>
-      <div className="image-container">
-        <img src={photoUrl} alt={`${rest.name}`} />
-      </div>
-      <div>
-        <h1>{rest.name}</h1>
-        <h6>{address}</h6>
-        <div className="booking-delivery-container">
-          {rest.has_table_booking >= 0
-            ? (
-              <div>
-                <Tick height="2em" width="2em" /><p>Booking available</p>
+      {rest
+        ? (
+          <>
+            <div className="image-container">
+              <img src={photoUrl} alt={`${rest.name}`} />
+            </div>
+            <div>
+              <h1>{rest.name}</h1>
+              <h6>{address}</h6>
+              <div className="booking-delivery-container">
+                {rest.has_table_booking >= 0
+                  ? (
+                    <div>
+                      <Tick height="2em" width="2em" /><p>Booking available</p>
+                    </div>
+                  )
+                  : (
+                    <div>
+                      <Cross height="2em" width="2em" /><p>No bookings</p>
+                    </div>
+                  )}
+                {rest.R.has_menu_status.delivery >= 0
+                  ? (
+                    <div>
+                      <Tick height="2em" width="2em" /><p>Delivery available</p>
+                    </div>
+                  )
+                  : (
+                    <div>
+                      <Cross height="2em" width="2em" /><p>No delivery</p>
+                    </div>
+                  )}
               </div>
-            )
-            : (
-              <div>
-                <Cross height="2em" width="2em" /><p>No bookings</p>
-              </div>
-            )}
-          {rest.R.has_menu_status.delivery >= 0
-            ? (
-              <div>
-                <Tick height="2em" width="2em" /><p>Delivery available</p>
-              </div>
-            )
-            : (
-              <div>
-                <Cross height="2em" width="2em" /><p>No delivery</p>
-              </div>
-            )}
-        </div>
-        <label>CUISINES</label>
-        <p className="large-p">{rest.cuisines}</p>
-        <label>PHONE NUMBER</label>
-        <p className="large-p">{rest.phone_numbers}</p>
-        <label>OPENING HOURS</label>
-        <p className="large-p">
-          Today {openingHours}
-          <OpenIndicator open={openNow} />
-        </p>
-
-      </div>
+              <label>CUISINES</label>
+              <p className="large-p">{rest.cuisines}</p>
+              <label>PHONE NUMBER</label>
+              <p className="large-p">{rest.phone_numbers}</p>
+              <label>OPENING HOURS</label>
+              <p className="large-p">
+                Today {openingHours}
+                <OpenIndicator open={openNow} />
+              </p>
+            </div>
+          </>
+        )
+        : null}
     </Container>
   );
 };

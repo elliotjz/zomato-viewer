@@ -34,9 +34,12 @@ class Page extends Component {
     super(props);
     this.state = {
       checkboxes: {},
-      ratings: [1, 2],
-      costs: [1, 2],
+      ratings: [0, 5],
+      costs: [1, 4],
       restaurants: [],
+      err: '',
+      loading: true,
+      selectedRestaurant: 0,
     };
   }
 
@@ -52,6 +55,10 @@ class Page extends Component {
   }
 
   async getRestaurants() {
+    this.setState({
+      err: '',
+      loading: true,
+    });
     const { checkboxes } = this.state;
     let query = '?entity_id=297&entity_type=city';
 
@@ -86,9 +93,16 @@ class Page extends Component {
     });
     if (res.status === 200) {
       const resJson = await res.json();
-      this.setState({ restaurants: resJson.restaurants });
+      this.setState({
+        restaurants: resJson.restaurants,
+        err: '',
+        loading: false,
+      });
     } else {
-      console.log(`Error. State: ${res.status}`);
+      this.setState({
+        err: 'Error accessing restaurant data',
+        loading: false,
+      });
     }
   }
 
@@ -102,6 +116,7 @@ class Page extends Component {
         ...checkboxes,
         [value]: checked,
       },
+      selectedRestaurant: 0,
     }, this.getRestaurants);
   }
 
@@ -109,20 +124,40 @@ class Page extends Component {
     const intValues = values.map((v) => parseInt(v, 10));
     this.setState({
       ratings: intValues,
-    }, this.getRestaurants);
+      selectedRestaurant: 0,
+    });
   }
 
   onCostsChange = (values) => {
     const intValues = values.map((v) => parseInt(v, 10));
     this.setState({
       costs: intValues,
-    }, this.getRestaurants);
+      selectedRestaurant: 0,
+    });
+  }
+
+  onRestaurantSelect = (selectedRestaurant) => {
+    this.setState({
+      selectedRestaurant,
+    });
   }
 
   render() {
     const {
-      checkboxes, ratings, costs, restaurants,
+      checkboxes, ratings, costs, restaurants, selectedRestaurant, err, loading,
     } = this.state;
+    const filteredRestaurants = restaurants.filter((r) => {
+      if (!r.restaurant) return false;
+      const rating = parseFloat(r.restaurant.user_rating.aggregate_rating, 10);
+      const { price_range: cost } = r.restaurant;
+      const ratingInRange = rating >= ratings[0] && rating <= ratings[1];
+      const costInRange = cost >= costs[0] && cost <= costs[1];
+      return ratingInRange && costInRange;
+    });
+
+    const error = filteredRestaurants.length === 0 && !loading
+      ? 'No restaurants found with these queries' : err;
+
     return (
       <Container>
         <HeaderSection
@@ -135,7 +170,13 @@ class Page extends Component {
           onCostsChange={this.onCostsChange}
           onCheckboxChange={this.onCheckboxChange}
         />
-        <MainSection restaurants={restaurants} />
+        <MainSection
+          restaurants={filteredRestaurants}
+          selectedRestaurant={selectedRestaurant}
+          onRestaurantSelect={this.onRestaurantSelect}
+          err={error}
+          loading={loading}
+        />
       </Container>
     );
   }
