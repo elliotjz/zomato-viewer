@@ -125,11 +125,9 @@ const DetailsSection = ({ restaurant, loading }) => {
               <p className="large-p">{rest.phone_numbers}</p>
               <label>OPENING HOURS</label>
               <p className="large-p">
-          Today {openingHours}
+                Today {openingHours}
                 <OpenIndicator open={openNow} />
               </p>
-              <p>{rest.user_rating.aggregate_rating}</p>
-              <p>{rest.price_range}</p>
             </div>
           </>
         )
