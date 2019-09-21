@@ -38,37 +38,42 @@ const Container = styled.div`
 `;
 
 const ResultsSection = ({
-  restaurants, loading, onResultClick, selectedIndex,
+  restaurants, onRestaurantSelect, selectedRestaurant, err, loading,
 }) => (
   <Container>
     <h3>RESULTS</h3>
 
-    {loading ? <p>Loading...</p>
-      : (
-        <menu>
-          <ul>
-            {restaurants.map((r, index) => (
-              <li key={r.restaurant.R.res_id}>
-                <button
-                  className={selectedIndex === index ? 'selected' : ''}
-                  type="button"
-                  onClick={() => onResultClick(index)}
-                >
-                  {r.restaurant.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </menu>
-      )}
+    {!loading && err === '' ? (
+      <menu>
+        <ul>
+          {restaurants.map((r, index) => (
+            <li key={r.restaurant.R.res_id}>
+              <button
+                className={selectedRestaurant === index ? 'selected' : ''}
+                type="button"
+                onClick={() => onRestaurantSelect(index)}
+              >
+                {r.restaurant.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </menu>
+    ) : (
+      <>
+        {loading && <p>Loading...</p>}
+        {err !== '' && <p>{err}</p>}
+      </>
+    )}
   </Container>
 );
 
 ResultsSection.propTypes = {
   restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onRestaurantSelect: PropTypes.func.isRequired,
+  selectedRestaurant: PropTypes.number.isRequired,
+  err: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
-  onResultClick: PropTypes.func.isRequired,
-  selectedIndex: PropTypes.number.isRequired,
 };
 
 export default ResultsSection;

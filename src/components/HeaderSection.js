@@ -115,8 +115,8 @@ const HeaderSection = ({
             <br />
             <Slider
               values={costs}
-              min={0}
-              max={3}
+              min={1}
+              max={4}
               minText="$"
               maxText="$$$$"
               onChange={onCostsChange}
