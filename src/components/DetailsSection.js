@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Img from 'react-image';
 
 import Tick from './Tick';
 import Cross from './Cross';
@@ -70,7 +71,7 @@ const DetailsSection = ({ restaurant, loading }) => {
   let openNowError = false;
   if (restaurant && restaurant.restaurant) {
     rest = restaurant.restaurant;
-    photoUrl = rest.photos[0].photo.url;
+    photoUrl = rest.photos ? rest.photos[0].photo.url : '';
 
     const streetNumber = rest.location.address.split(' ')[0];
     address = streetNumber + rest.location.locality_verbose;
@@ -92,7 +93,11 @@ const DetailsSection = ({ restaurant, loading }) => {
       {rest ? (
         <>
           <div className="image-container">
-            <img src={photoUrl} alt={`${rest.name}`} />
+            <Img
+              src={photoUrl}
+              alt={`${rest.name}`}
+              loader={<p>Loading...</p>}
+            />
           </div>
           <div>
             <h1>{rest.name}</h1>
