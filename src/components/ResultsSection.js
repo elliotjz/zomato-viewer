@@ -44,6 +44,7 @@ const Container = styled.div`
 
   .loading {
     padding-left: 2em;
+    padding-bottom: 2em;
   }
 `;
 
@@ -52,8 +53,8 @@ const ResultsSection = ({
 }) => (
   <Container>
     <h3>RESULTS</h3>
-
-    {!loading && err === '' ? (
+    {err !== '' && <p className="err">{err}</p>}
+    {restaurants.length > 0 && (
       <menu>
         <ul>
           {restaurants.map((r, index) => (
@@ -69,12 +70,8 @@ const ResultsSection = ({
           ))}
         </ul>
       </menu>
-    ) : (
-      <>
-        {loading && <p className="loading">Loading...</p>}
-        {err !== '' && <p className="err">{err}</p>}
-      </>
     )}
+    {loading && <p className="loading">Loading...</p>}
   </Container>
 );
 

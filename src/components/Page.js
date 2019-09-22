@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import HeaderSection from './HeaderSection';
 import MainSection from './MainSection';
 
+const BATCH_SIZE = 20;
+
 const categories = {
   Dining: { text: 'Dining', id: 2 },
   'Take-Away': { text: 'Take-Away', id: 5 },
@@ -54,13 +56,16 @@ class Page extends Component {
     this.setState({ checkboxes });
   }
 
-  async getRestaurants() {
+  async getRestaurants(start = 0) {
     this.setState({
       err: '',
       loading: true,
     });
     const { checkboxes } = this.state;
     let query = '?entity_id=297&entity_type=city';
+
+    // Offset the restaurants that are being fetched
+    query += `&start=${start}`;
 
     // Append category queries
     let categoryQuery = '&category=';
@@ -85,20 +90,35 @@ class Page extends Component {
     }
 
     const url = `https://developers.zomato.com/api/v2.1/search${query}`;
-    const res = await fetch(url, {
-      headers: {
-        Accept: 'application/json',
-        'user-key': `${process.env.REACT_APP_ZOMATO_API_KEY}`,
-      },
-    });
-    if (res.status === 200) {
+    try {
+      const res = await fetch(url, {
+        headers: {
+          Accept: 'application/json',
+          'user-key': `${process.env.REACT_APP_ZOMATO_API_KEY}`,
+        },
+      });
       const resJson = await res.json();
+
+      let restaurants;
+      if (start === 0) {
+        // Replace the restaurants in state
+        restaurants = resJson.restaurants;
+      } else {
+        // Append to the restaurants in state
+        const { restaurants: restaurantsFromState } = this.state;
+        restaurants = [...restaurantsFromState, ...resJson.restaurants];
+      }
       this.setState({
-        restaurants: resJson.restaurants,
+        restaurants,
         err: '',
         loading: false,
       });
-    } else {
+
+      // Get another batch from the API
+      if (restaurants.length < 100) {
+        this.getRestaurants(start + BATCH_SIZE);
+      }
+    } catch (err) {
       this.setState({
         err: 'Error accessing restaurant data',
         loading: false,
