@@ -18,6 +18,7 @@ const MainSection = ({
   loading,
 }) => {
   const rProp = restaurants.length > 0 ? restaurants[selectedRestaurant] : {};
+  const detailsLoading = loading && restaurants.length === 0;
 
   return (
     <Container>
@@ -30,7 +31,7 @@ const MainSection = ({
       />
       <DetailsSection
         restaurant={rProp}
-        loading={loading}
+        loading={detailsLoading}
       />
     </Container>
   );
