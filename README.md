@@ -4,6 +4,20 @@ Find, navigate and view restaurants through the Zomato API
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## How to run the project
+
+1. Create a `.env` file in the root directory
+
+2. Get an API key from https://developers.zomato.com
+
+3. Modify the `.env` file so that the first line is: `REACT_APP_ZOMATO_API_KEY=<your_api_key>`
+
+4. Navigate to the project's root directory with command line
+
+5. Execute `npm install`
+
+6. Execute `npm start`
+
 ## Available Scripts
 
 In the project directory, you can run:
