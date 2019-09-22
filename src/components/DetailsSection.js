@@ -69,6 +69,7 @@ const DetailsSection = ({ restaurant, loading }) => {
   let address;
   let openingHours;
   let openNow;
+  let openNowError = false;
   if (restaurant && restaurant.restaurant) {
     rest = restaurant.restaurant;
     photoUrl = rest.photos[0].photo.url;
@@ -79,7 +80,11 @@ const DetailsSection = ({ restaurant, loading }) => {
     const { timings } = rest;
     const date = new Date();
     openingHours = getOpeningHours(timings, date);
-    openNow = isOpenNow(openingHours, date);
+    try {
+      openNow = isOpenNow(openingHours, date);
+    } catch (err) {
+      openNowError = true;
+    }
   } else {
     rest = null;
   }
@@ -127,7 +132,7 @@ const DetailsSection = ({ restaurant, loading }) => {
               <p className="large-p">
                 Today {openingHours}
                 {' '}
-                <OpenIndicator open={openNow} />
+                {!openNowError && <OpenIndicator open={openNow} />}
               </p>
             </div>
           </>
