@@ -77,10 +77,10 @@ menu, nav {
 	height: 10px;
 }
 .noUi-horizontal .noUi-handle {
-	width: 20px;
-	height: 20px;
-	left: -10px;
-	top: -7px;
+	width: 16px;
+	height: 16px;
+	left: -8px;
+	top: -3px;
 }
 .noUi-horizontal.noUi-extended {
 	padding: 0 15px;
@@ -124,7 +124,7 @@ menu, nav {
 }
 .noUi-handle {
   border-radius: 10px;
-  border: 1px solid #55bebe;
+  border: 1.5px solid #55bebe;
 	background: #e5e5e5;
   cursor: grab;
 }

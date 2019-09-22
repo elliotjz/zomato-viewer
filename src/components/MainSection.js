@@ -7,6 +7,7 @@ import DetailsSection from './DetailsSection';
 
 const Container = styled.div`
   display: flex;
+  height: 80vh;
 `;
 
 const MainSection = ({

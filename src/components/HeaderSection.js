@@ -12,10 +12,11 @@ const Container = styled.div`
   form {
     display: flex;
     justify-content: space-between;
-    padding: 3em;
+    padding: 1.8em;
     font-size: 0.8em;
     max-width: 1200px;
     margin: auto;
+    color: ${(props) => props.theme.colors.darkGrey};
 
     .checkboxes-container {
       display: flex;
@@ -40,11 +41,12 @@ const Container = styled.div`
       display: grid;
       grid-template-rows: 1fr 1fr 1fr 1fr;
       grid-auto-flow: column;
+      font-size: 0.9em;
     }
 
     .section-label {
       font-weight: 600;
-      font-size: 0.8em;
+      font-size: 0.7em;
       letter-spacing: 0.2em;
     }
   }
