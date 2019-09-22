@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
 import { WAITING } from '../utils';
+import Spinner from './Spinner';
 
 const Container = styled.div`
   flex: 3;
@@ -59,11 +61,6 @@ const Container = styled.div`
     color: ${(props) => props.theme.colors.red};
     padding: 0.5em 2em;
   }
-
-  .loading {
-    padding-left: 2em;
-    padding-bottom: 2em;
-  }
 `;
 
 const ResultsSection = ({
@@ -118,7 +115,7 @@ const ResultsSection = ({
           </ul>
         </menu>
         )}
-        {loading && <p className="loading">Loading...</p>}
+        {loading && <Spinner />}
       </>
     )}
   </Container>

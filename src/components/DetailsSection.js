@@ -6,6 +6,7 @@ import Img from 'react-image';
 import Tick from './Tick';
 import Cross from './Cross';
 import OpenIndicator from './OpenIndicator';
+import Spinner from './Spinner';
 
 import { getOpeningHours, isOpenNow } from '../utils';
 
@@ -96,7 +97,7 @@ const DetailsSection = ({ restaurant, loading }) => {
             <Img
               src={photoUrl}
               alt={`${rest.name}`}
-              loader={<p>Loading...</p>}
+              loader={<Spinner />}
             />
           </div>
           <div>
@@ -140,7 +141,7 @@ const DetailsSection = ({ restaurant, loading }) => {
         </>
       ) : (
         <>
-          {loading && <p>Loading...</p>}
+          {loading && <Spinner />}
         </>
       )}
     </Container>
