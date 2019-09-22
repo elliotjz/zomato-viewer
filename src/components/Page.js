@@ -62,7 +62,7 @@ class Page extends Component {
       loading: true,
     });
     const { checkboxes } = this.state;
-    let query = '?entity_id=297&entity_type=city&';
+    let query = '?entity_id=297&entity_type=city';
 
     // Offset the restaurants that are being fetched
     query += `&start=${start}`;
