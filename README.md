@@ -8,7 +8,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 1. Create a `.env` file in the root directory
 
-2. Get an API key from https://developers.zomato.com
+2. Get an API key from https://developers.zomato.com/api
 
 3. Modify the `.env` file so that the first line is: `REACT_APP_ZOMATO_API_KEY=<your_api_key>`
 
