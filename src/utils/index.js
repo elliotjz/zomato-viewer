@@ -1,4 +1,8 @@
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const BATCH_SIZE = 20;
+const WAITING = 0;
+const SET = 1;
+const DEFAULT = 2;
 
 const getOpeningHours = (timings, date) => {
   try {
@@ -63,4 +67,6 @@ const isOpenNow = (openingHoursParam, date) => {
   return matches.length > 0;
 };
 
-export { getOpeningHours, isOpenNow };
+export {
+  getOpeningHours, isOpenNow, BATCH_SIZE, WAITING, SET, DEFAULT,
+};
