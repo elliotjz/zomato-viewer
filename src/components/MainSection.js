@@ -14,6 +14,9 @@ const MainSection = ({
   restaurants,
   selectedRestaurant,
   onRestaurantSelect,
+  locationState,
+  getUserLocation,
+  acceptDefaultLocation,
   err,
   loading,
 }) => {
@@ -26,6 +29,9 @@ const MainSection = ({
         restaurants={restaurants}
         onRestaurantSelect={onRestaurantSelect}
         selectedRestaurant={selectedRestaurant}
+        locationState={locationState}
+        getUserLocation={getUserLocation}
+        acceptDefaultLocation={acceptDefaultLocation}
         err={err}
         loading={loading}
       />
@@ -41,6 +47,9 @@ MainSection.propTypes = {
   restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
   selectedRestaurant: PropTypes.number.isRequired,
   onRestaurantSelect: PropTypes.func.isRequired,
+  locationState: PropTypes.number.isRequired,
+  getUserLocation: PropTypes.func.isRequired,
+  acceptDefaultLocation: PropTypes.func.isRequired,
   err: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
 };

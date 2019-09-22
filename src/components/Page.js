@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import HeaderSection from './HeaderSection';
 import MainSection from './MainSection';
 
-const BATCH_SIZE = 20;
+import {
+  BATCH_SIZE, WAITING, SET, DEFAULT,
+} from '../utils';
 
 const categories = {
   Dining: { text: 'Dining', id: 2 },
@@ -38,9 +40,12 @@ class Page extends Component {
       checkboxes: {},
       ratings: [0, 5],
       costs: [1, 4],
+      latitude: null,
+      longitude: null,
+      locationState: WAITING,
       restaurants: [],
       err: '',
-      loading: true,
+      loading: false,
       selectedRestaurant: 0,
     };
   }
@@ -52,17 +57,43 @@ class Page extends Component {
     [...categoryKeys, ...cuisineKeys].forEach((item) => {
       checkboxes[item] = false;
     });
-    this.getRestaurants();
     this.setState({ checkboxes });
   }
 
   async getRestaurants(start = 0) {
-    this.setState({
-      err: '',
-      loading: true,
-    });
-    const { checkboxes } = this.state;
-    let query = '?entity_id=297&entity_type=city';
+    const {
+      checkboxes,
+      latitude,
+      longitude,
+      locationState,
+    } = this.state;
+
+    // Don't get restaurants until the location is set
+    if (locationState === WAITING) return;
+
+    // Set the state
+    if (start === 0) {
+      this.setState({
+        err: '',
+        loading: true,
+        restaurants: [],
+      });
+    } else {
+      this.setState({
+        err: '',
+        loading: true,
+      });
+    }
+
+    // Construct query
+    let query = '';
+    if (locationState === SET) {
+      // Use user coordinates
+      query = `?lat=${latitude}&lon=${longitude}&radius=30000`;
+    } else {
+      // Search in Adelaide
+      query += '?entity_id=297&entity_type=city';
+    }
 
     // Offset the restaurants that are being fetched
     query += `&start=${start}`;
@@ -126,6 +157,37 @@ class Page extends Component {
     }
   }
 
+  getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        this.setState({
+          latitude,
+          longitude,
+          locationState: SET,
+        }, this.getRestaurants);
+      }, () => {
+        // Success
+        this.setState({
+          err: 'Unable to get location. Searching for results in Adelaide.',
+          locationState: DEFAULT,
+        }, this.getRestaurants);
+      });
+    } else {
+      // Error
+      this.setState({
+        err: 'Unable to get location. Searching for results in Adelaide.',
+        locationState: DEFAULT,
+      }, this.getRestaurants);
+    }
+  }
+
+  acceptDefaultLocation = () => {
+    this.setState({
+      locationState: DEFAULT,
+    }, this.getRestaurants);
+  }
+
   onCheckboxChange = (e) => {
     const { checkboxes } = this.state;
     const { target } = e;
@@ -164,7 +226,14 @@ class Page extends Component {
 
   render() {
     const {
-      checkboxes, ratings, costs, restaurants, selectedRestaurant, err, loading,
+      checkboxes,
+      ratings,
+      costs,
+      restaurants,
+      selectedRestaurant,
+      locationState,
+      err,
+      loading,
     } = this.state;
     const filteredRestaurants = restaurants.filter((r) => {
       if (!r.restaurant) return false;
@@ -175,7 +244,8 @@ class Page extends Component {
       return ratingInRange && costInRange;
     });
 
-    const error = filteredRestaurants.length === 0 && !loading
+    const error = filteredRestaurants.length === 0
+      && !loading && locationState !== WAITING
       ? 'No restaurants found with these queries' : err;
 
     return (
@@ -192,6 +262,9 @@ class Page extends Component {
         />
         <MainSection
           restaurants={filteredRestaurants}
+          locationState={locationState}
+          acceptDefaultLocation={this.acceptDefaultLocation}
+          getUserLocation={this.getUserLocation}
           selectedRestaurant={selectedRestaurant}
           onRestaurantSelect={this.onRestaurantSelect}
           err={error}
