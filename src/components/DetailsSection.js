@@ -25,7 +25,7 @@ const Container = styled.div`
   }
 
   h1 {
-    font-size: 3em;
+    font-size: 1.5em;
     font-weight: 500;
   }
 
@@ -36,7 +36,7 @@ const Container = styled.div`
 
   .booking-delivery-container {
     margin: 1em 0;
-    font-size: 0.9em;
+    font-size: 0.8em;
 
     div {
       display: flex;
@@ -51,18 +51,18 @@ const Container = styled.div`
 
   label {
     font-weight: 600;
-    font-size: 0.9em;
+    font-size: 0.7em;
     letter-spacing: 0.2em;
   }
 
   .large-p {
     margin-bottom: 1em;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 `;
 
 const DetailsSection = ({ restaurant, loading }) => {
-  if (loading) return <Container><p>loading...</p></Container>;
+  if (loading) return <Container><p>Loading...</p></Container>;
 
   let rest;
   let photoUrl;
@@ -99,23 +99,23 @@ const DetailsSection = ({ restaurant, loading }) => {
                 {rest.has_table_booking >= 0
                   ? (
                     <div>
-                      <Tick height="2em" width="2em" /><p>Booking available</p>
+                      <Tick height="1.5em" width="1.5em" /><p>Booking available</p>
                     </div>
                   )
                   : (
                     <div>
-                      <Cross height="2em" width="2em" /><p>No bookings</p>
+                      <Cross height="1.5em" width="1.5em" /><p>No bookings</p>
                     </div>
                   )}
                 {rest.R.has_menu_status.delivery >= 0
                   ? (
                     <div>
-                      <Tick height="2em" width="2em" /><p>Delivery available</p>
+                      <Tick height="1.5em" width="1.5em" /><p>Delivery available</p>
                     </div>
                   )
                   : (
                     <div>
-                      <Cross height="2em" width="2em" /><p>No delivery</p>
+                      <Cross height="1.5em" width="1.5em" /><p>No delivery</p>
                     </div>
                   )}
               </div>
@@ -126,6 +126,7 @@ const DetailsSection = ({ restaurant, loading }) => {
               <label>OPENING HOURS</label>
               <p className="large-p">
                 Today {openingHours}
+                {' '}
                 <OpenIndicator open={openNow} />
               </p>
             </div>

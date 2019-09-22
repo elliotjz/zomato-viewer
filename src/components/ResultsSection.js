@@ -6,7 +6,6 @@ const Container = styled.div`
   flex: 3;
   background-color: ${(props) => props.theme.colors.grey};
   padding: 1rem 1rem 1rem 0;
-  height: 80vh;
   overflow: scroll;
 
   h3 {
@@ -35,6 +34,17 @@ const Container = styled.div`
     color: ${(props) => props.theme.colors.white};
     border: 0;
   }
+
+  .err {
+    border-top: 1px solid ${(props) => `${props.theme.colors.red}77`};
+    border-bottom: 1px solid ${(props) => `${props.theme.colors.red}77`};
+    color: ${(props) => props.theme.colors.red};
+    padding: 0.5em 2em;
+  }
+
+  .loading {
+    padding-left: 2em;
+  }
 `;
 
 const ResultsSection = ({
@@ -61,8 +71,8 @@ const ResultsSection = ({
       </menu>
     ) : (
       <>
-        {loading && <p>Loading...</p>}
-        {err !== '' && <p>{err}</p>}
+        {loading && <p className="loading">Loading...</p>}
+        {err !== '' && <p className="err">{err}</p>}
       </>
     )}
   </Container>

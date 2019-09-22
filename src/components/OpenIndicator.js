@@ -8,7 +8,7 @@ const Container = styled.span`
   font-size: 0.6em;
   font-weight: 500;
   padding: 0.4em 0.8em;
-  margin-left: 1em;
+  white-space: nowrap;
 `;
 
 const Open = styled(Container)`

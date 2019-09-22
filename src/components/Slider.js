@@ -5,7 +5,7 @@ import NoUiSlider from 'react-nouislider';
 
 const Container = styled.div`
   width: 100%;
-  padding: 0.8em;
+  margin-top: 0.5em;
 
   p {
     margin-top: 0.5em;

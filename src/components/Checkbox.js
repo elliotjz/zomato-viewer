@@ -10,7 +10,7 @@ const Container = styled.div`
     appearance: none;
     -webkit-appearance: none;
     background-color: ${(props) => props.theme.colors.grey};
-    padding: 0.6em;
+    padding: 0.5em;
     top: 0.5em;
     display: inline-block;
     position: relative;
