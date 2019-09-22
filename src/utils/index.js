@@ -1,20 +1,24 @@
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const getOpeningHours = (timings, date) => {
-  const dayIndex = date.getDay();
-  const timingsArray = timings.split('),');
-  let todaysEntry = [];
-  if (timingsArray.length === 1) {
-    todaysEntry = timingsArray;
-  } else {
-    for (let i = 0; todaysEntry.length === 0 && i < 7; i++) {
-      todaysEntry = timingsArray.filter((option) => (
-        option.includes(days[(dayIndex + i) % 7])
-      ));
+  try {
+    const dayIndex = date.getDay();
+    const timingsArray = timings.split('),');
+    let todaysEntry = [];
+    if (timingsArray.length === 1) {
+      todaysEntry = timingsArray;
+    } else {
+      for (let i = 0; todaysEntry.length === 0 && i < 7; i++) {
+        todaysEntry = timingsArray.filter((option) => (
+          option.includes(days[(dayIndex + i) % 7])
+        ));
+      }
     }
+    const openingTimes = todaysEntry[0].split(' (')[0];
+    return openingTimes;
+  } catch (err) {
+    return timings;
   }
-  const openingTimes = todaysEntry[0].split(' (')[0];
-  return openingTimes;
 };
 
 const isOpenNow = (openingHoursParam, date) => {
